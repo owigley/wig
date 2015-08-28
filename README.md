@@ -25,8 +25,15 @@ Bash script utility for manipulating individual lines of stdout / stdin
  Examples
 
      echo ls | wig            //store input from ls
-     cat main.c | wig         //store content of file
      wig -p                   //print all cached items with indices prefixed
      wig -l 3                 //print cached line item 3
      cp `wig -l 3` ~          //copy line item 3 to home dir
      git commit `wig -l 3`    //git commits the file item
+     cat main.c | wig         //store content of file
+     ps | wig                 //store ps output
+
+Using With Git
+
+     $git status | wig         //store current git status
+     $wig -p                   //view modified files
+     $git commit `wig -l 10`   //commits line item 10
