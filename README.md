@@ -2,9 +2,11 @@
 Bash script utility for manipulating individual lines of stdout
 
  Name
+
      wig
 
  Synopsis
+
      wig [-pl]
 
  Description
@@ -21,7 +23,9 @@ Bash script utility for manipulating individual lines of stdout
      -h print help
 
  Examples
+
      echo ls | wig            //store input from ls
+
      cat main.c | wig         //store content of file
 
      wig -p                         //print all chached items with indices prefixed
