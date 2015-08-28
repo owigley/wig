@@ -1,5 +1,5 @@
 # wig
-Bash script utility for manipulating individual lines of stdout
+Bash script utility for manipulating individual lines of stdout / stdin
 
  Name
 
