@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#
+# Name
+#     wig
+#
+# Synopsis
+#     wig [-pl]
+#
+# Description
+#
+#     Caches any input from stdin. Each bash terminal session has a separate cache.
+#     Caches persists until overwritten by wig, or when system reboots.
+#
+#     With no arguments passed it expects input via stdin.
+#
+#     -p displays current cache content, each line item prefixed with index
+#
+#     -l <index> prints just line item without index prefixed
+#
+#     -h print help
+#
+# Examples
+#     echo ls | wig            //store input from ls
+#     cat main.c | wig         //store content of file
+#
+#     wig -p                         //print all chached items with indices prefixed
+#     wig -l 3                       //print cached line item 3
+#     cp `wig -l 3` ~                //copy line item 3 to home dir
+#     git commit `wig -l 3`          //git commits the file item
+#
+
+SM_FILE=/tmp/${TERM_SESSION_ID}_changes.txt
+
+function help
+{
+  cat `which wig` | head -n 29
+  exit 0
+}
+
+function populate
+{
+    VALUE=$(cat)
+    touch ${SM_FILE} 2>/dev/null
+
+    IFS=$'\n'; set -f; foo=($VALUE)
+
+    rm $SM_FILE  2>/dev/null
+
+    for a in "${foo[@]}" ; do
+      echo "$a" >> $SM_FILE
+    done
+}
+
+function show_line
+{
+  [ -e $1 ] && echo supply index && exit 1
+  file=`grep -nh ".*" ${SM_FILE} | grep "^$1:" | sed "s!^${1}:!!g" | sed "s. .\\\\ .g" `
+  echo ${file}
+  exit
+}
+
+function show_list
+{
+  grep -nh ".*" ${SM_FILE}
+  exit
+}
+
+[ "$#" = "0" ]  && populate
+[ "$1" = "-p" ] && show_list
+[ "$1" = "-l" ] && show_line ${2}
+[ "$1" = "-h" ] && help
+
+exit 0
+
